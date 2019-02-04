@@ -153,7 +153,7 @@ namespace Stratis.Bitcoin.Configuration
             // but both the data directory and the configuration file path may be changed using the -datadir and -conf command-line arguments.
             this.ConfigurationFile = this.ConfigReader.GetOrDefault<string>("conf", null, this.Logger)?.NormalizeDirectorySeparator();
             this.DataDir = this.ConfigReader.GetOrDefault<string>("datadir", null, this.Logger)?.NormalizeDirectorySeparator();
-            this.DataDirRoot = this.ConfigReader.GetOrDefault<string>("datadirroot", "StratisNode", this.Logger);
+            this.DataDirRoot = this.ConfigReader.GetOrDefault<string>("datadirroot", "StratisNode", this.Logger); //line not used except in CreateDefaultDataDirectories() and is never a path. Remove altogether??
 
             // If the configuration file is relative then assume it is relative to the data folder and combine the paths.
             if (this.DataDir != null && this.ConfigurationFile != null)
@@ -171,7 +171,7 @@ namespace Stratis.Bitcoin.Configuration
                 if (!File.Exists(this.ConfigurationFile))
                     throw new ConfigurationException($"Configuration file does not exist at {this.ConfigurationFile}.");
 
-                // Sets the ConfigReader based on the arguments and the configuration file if it exists.
+                // Sets the ConfigReader based on the arguments and the configuration file if it exists. 
                 this.ReadConfigurationFile();
             }
 
@@ -205,7 +205,7 @@ namespace Stratis.Bitcoin.Configuration
             else
             {
                 // Combine the data directory with the network's root folder and name.
-                string directoryPath = Path.Combine(this.DataDir, this.Network.RootFolderName, this.Network.Name);
+                string directoryPath = Path.Combine(this.DataDir, this.Network.RootFolderName, this.Network.Name); //Node folder has the same name as the network by default.
                 this.DataDir = Directory.CreateDirectory(directoryPath).FullName;
                 this.Logger.LogDebug("Data directory initialized with path {0}.", this.DataDir);
             }
